@@ -1,5 +1,5 @@
 {
-  "name": "gpt3_ossama",
+  "name": "AI-blog",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://dvkpatel11.github.io/figmas",
@@ -19,7 +19,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint:css": "stylelint \"src/**/*.{css,scss}\""
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +41,8 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "stylelint": "^15.3.0",
+    "stylelint-config-recommended": "^11.0.0"
   }
 }

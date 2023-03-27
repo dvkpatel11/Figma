@@ -45,7 +45,6 @@
     border: 2px solid var(--color-footer);
     padding: 0 1rem;
     outline: none;
-    color: #fff;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     font-family: var(--font-family);
@@ -116,7 +115,7 @@
         flex-direction: column;
     }
 
-    .gpt3__header-content: {
+    .gpt3__header-content {
         margin: 0 0 3rem;
     }
 }
