@@ -19,7 +19,7 @@ const Header = () => {
         </p>
 
         <div className="gpt3__header-actions">
-          <a href="/dancing-bot.html" className="gpt3__header-btn gpt3__header-btn--primary">
+          <a href={`${process.env.PUBLIC_URL}/dancing-bot.html`} className="gpt3__header-btn gpt3__header-btn--primary">
             <span className="gpt3__header-btn__icon">&#9733;</span>
             Meet Dancing Clawd
           </a>
