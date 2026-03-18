@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dancing Clawd Bot</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  h1 {
+    color: #e8985e;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(232, 152, 94, 0.5);
+    animation: titlePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Dance floor */
+  .dance-floor {
+    position: relative;
+    width: 600px;
+    height: 500px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .floor {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, #e8985e33, #d4845a33, #e8985e33);
+    border-radius: 50%;
+    animation: floorPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes floorPulse {
+    0%, 100% { background: linear-gradient(135deg, #e8985e22, #d4845a44, #e8985e22); }
+    50% { background: linear-gradient(135deg, #e8985e44, #d4845a66, #e8985e44); }
+  }
+
+  /* Bot container */
+  .bot {
+    position: relative;
+    width: 200px;
+    height: 340px;
+    margin-bottom: 30px;
+    animation: dance 1s ease-in-out infinite;
+  }
+
+  @keyframes dance {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(-5deg); }
+    50% { transform: translateY(-5px) rotate(0deg); }
+    75% { transform: translateY(-30px) rotate(5deg); }
+  }
+
+  /* Head */
+  .head {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 140px;
+    height: 120px;
+    background: linear-gradient(145deg, #e8985e, #d4845a);
+    border-radius: 60px 60px 50px 50px;
+    z-index: 3;
+    box-shadow: 0 5px 20px rgba(232, 152, 94, 0.3);
+  }
+
+  /* Eyes */
+  .eye {
+    position: absolute;
+    width: 24px;
+    height: 30px;
+    background: #1a1a2e;
+    border-radius: 50%;
+    top: 40px;
+    animation: blink 3s ease-in-out infinite;
+  }
+
+  .eye::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    top: 6px;
+    left: 8px;
+    animation: eyeShine 1s ease-in-out infinite;
+  }
+
+  .eye.left { left: 32px; }
+  .eye.right { right: 32px; }
+
+  @keyframes blink {
+    0%, 45%, 55%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.1); }
+  }
+
+  @keyframes eyeShine {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-2px, 2px); }
+  }
+
+  /* Smile */
+  .mouth {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 22px;
+    border-bottom: 4px solid #1a1a2e;
+    border-radius: 0 0 25px 25px;
+    animation: smile 1s ease-in-out infinite;
+  }
+
+  @keyframes smile {
+    0%, 100% { width: 50px; height: 22px; }
+    50% { width: 56px; height: 26px; }
+  }
+
+  /* Antenna */
+  .antenna {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 30px;
+    background: #d4845a;
+    animation: antennaWiggle 0.5s ease-in-out infinite;
+  }
+
+  .antenna::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: -6px;
+    width: 16px;
+    height: 16px;
+    background: #e8985e;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(232, 152, 94, 0.8), 0 0 30px rgba(232, 152, 94, 0.4);
+    animation: glow 1s ease-in-out infinite;
+  }
+
+  @keyframes antennaWiggle {
+    0%, 100% { transform: translateX(-50%) rotate(-10deg); }
+    50% { transform: translateX(-50%) rotate(10deg); }
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 15px rgba(232, 152, 94, 0.8), 0 0 30px rgba(232, 152, 94, 0.4); }
+    50% { box-shadow: 0 0 25px rgba(232, 152, 94, 1), 0 0 50px rgba(232, 152, 94, 0.6); }
+  }
+
+  /* Body */
+  .body {
+    position: absolute;
+    top: 110px;
+    left: 35px;
+    width: 130px;
+    height: 120px;
+    background: linear-gradient(145deg, #e8985e, #c97a4a);
+    border-radius: 20px 20px 30px 30px;
+    z-index: 2;
+    box-shadow: 0 5px 20px rgba(232, 152, 94, 0.3);
+  }
+
+  /* Chest badge */
+  .body::after {
+    content: 'C';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: #1a1a2e;
+    opacity: 0.3;
+  }
+
+  /* Arms */
+  .arm {
+    position: absolute;
+    width: 30px;
+    height: 100px;
+    background: linear-gradient(145deg, #e8985e, #d4845a);
+    border-radius: 15px;
+    z-index: 1;
+    top: 120px;
+    transform-origin: top center;
+  }
+
+  .arm.left {
+    left: 5px;
+    animation: armLeftDance 1s ease-in-out infinite;
+  }
+
+  .arm.right {
+    right: 5px;
+    animation: armRightDance 1s ease-in-out infinite;
+  }
+
+  /* Hands */
+  .arm::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: #eaa870;
+    border-radius: 50%;
+  }
+
+  @keyframes armLeftDance {
+    0%, 100% { transform: rotate(20deg); }
+    25% { transform: rotate(-120deg); }
+    50% { transform: rotate(20deg); }
+    75% { transform: rotate(-60deg); }
+  }
+
+  @keyframes armRightDance {
+    0%, 100% { transform: rotate(-20deg); }
+    25% { transform: rotate(60deg); }
+    50% { transform: rotate(-20deg); }
+    75% { transform: rotate(120deg); }
+  }
+
+  /* Legs */
+  .leg {
+    position: absolute;
+    width: 35px;
+    height: 80px;
+    background: linear-gradient(145deg, #d4845a, #c07040);
+    border-radius: 15px;
+    z-index: 1;
+    top: 225px;
+    transform-origin: top center;
+  }
+
+  .leg.left {
+    left: 45px;
+    animation: legLeftDance 1s ease-in-out infinite;
+  }
+
+  .leg.right {
+    right: 45px;
+    animation: legRightDance 1s ease-in-out infinite;
+  }
+
+  /* Feet */
+  .leg::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    width: 42px;
+    height: 18px;
+    background: #c07040;
+    border-radius: 20px 20px 10px 10px;
+  }
+
+  .leg.left::after { left: -5px; }
+  .leg.right::after { right: -5px; }
+
+  @keyframes legLeftDance {
+    0%, 100% { transform: rotate(-10deg); }
+    25% { transform: rotate(20deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(-25deg); }
+  }
+
+  @keyframes legRightDance {
+    0%, 100% { transform: rotate(10deg); }
+    25% { transform: rotate(-25deg); }
+    50% { transform: rotate(10deg); }
+    75% { transform: rotate(20deg); }
+  }
+
+  /* Disco particles */
+  .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: particleFloat 2s ease-in-out infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes particleFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-40px) scale(0.5); opacity: 0; }
+  }
+
+  /* Music notes */
+  .note {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0;
+    animation: noteFloat 2s ease-out infinite;
+  }
+
+  .note:nth-child(1) { right: 20px; top: 50px; animation-delay: 0s; }
+  .note:nth-child(2) { left: 20px; top: 80px; animation-delay: 0.5s; }
+  .note:nth-child(3) { right: 40px; top: 120px; animation-delay: 1s; }
+  .note:nth-child(4) { left: 40px; top: 40px; animation-delay: 1.5s; }
+
+  @keyframes noteFloat {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-120px) rotate(30deg); opacity: 0; }
+  }
+
+  /* Controls */
+  .controls {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+  }
+
+  button {
+    padding: 12px 28px;
+    border: 2px solid #e8985e;
+    background: transparent;
+    color: #e8985e;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+  }
+
+  button:hover {
+    background: #e8985e;
+    color: #1a1a2e;
+    box-shadow: 0 0 25px rgba(232, 152, 94, 0.5);
+  }
+
+  button.active {
+    background: #e8985e;
+    color: #1a1a2e;
+  }
+
+  /* Speed label */
+  .speed-label {
+    color: #e8985e88;
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+
+  /* Dance style: robot */
+  .bot.robot { animation: danceRobot 1s steps(4) infinite; }
+  @keyframes danceRobot {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(-8deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(-20px) rotate(8deg); }
+  }
+
+  /* Dance style: spin */
+  .bot.spin { animation: danceSpin 1.5s linear infinite; }
+  @keyframes danceSpin {
+    0% { transform: translateY(0) rotateY(0deg); }
+    25% { transform: translateY(-20px) rotateY(90deg); }
+    50% { transform: translateY(0) rotateY(180deg); }
+    75% { transform: translateY(-20px) rotateY(270deg); }
+    100% { transform: translateY(0) rotateY(360deg); }
+  }
+
+  /* Dance style: bounce */
+  .bot.bounce { animation: danceBounce 0.6s ease-in-out infinite; }
+  @keyframes danceBounce {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    30% { transform: translateY(-50px) scaleY(1.1); }
+    50% { transform: translateY(0) scaleY(0.9) scaleX(1.1); }
+    70% { transform: translateY(-25px) scaleY(1.05); }
+  }
+
+  /* Disco ball */
+  .disco-ball {
+    position: fixed;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 30% 30%, #fff, #aaa, #666);
+    border-radius: 50%;
+    animation: discoRotate 4s linear infinite;
+    box-shadow: 0 0 40px rgba(255,255,255,0.2);
+  }
+
+  .disco-ball::before {
+    content: '';
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 0;
+    background: #aaa;
+  }
+
+  @keyframes discoRotate {
+    from { transform: translateX(-50%) rotateY(0deg); }
+    to { transform: translateX(-50%) rotateY(360deg); }
+  }
+
+  /* Light rays */
+  .light-rays {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .ray {
+    position: absolute;
+    width: 3px;
+    height: 300px;
+    transform-origin: top center;
+    opacity: 0.15;
+    animation: rayMove 3s ease-in-out infinite;
+  }
+
+  .ray:nth-child(1) { background: #ff6b6b; transform: rotate(-40deg); animation-delay: 0s; }
+  .ray:nth-child(2) { background: #ffd93d; transform: rotate(-20deg); animation-delay: 0.5s; }
+  .ray:nth-child(3) { background: #6bff6b; transform: rotate(0deg); animation-delay: 1s; }
+  .ray:nth-child(4) { background: #6b6bff; transform: rotate(20deg); animation-delay: 1.5s; }
+  .ray:nth-child(5) { background: #ff6bff; transform: rotate(40deg); animation-delay: 2s; }
+
+  @keyframes rayMove {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+
+<div class="disco-ball"></div>
+<div class="light-rays">
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+</div>
+
+<h1>Clawd Bot Dance Party</h1>
+
+<div class="dance-floor">
+  <div class="particles" id="particles"></div>
+
+  <div class="note">&#9835;</div>
+  <div class="note">&#9834;</div>
+  <div class="note">&#9835;</div>
+  <div class="note">&#9834;</div>
+
+  <div class="bot" id="bot">
+    <div class="head">
+      <div class="antenna"></div>
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="mouth"></div>
+    </div>
+    <div class="body"></div>
+    <div class="arm left"></div>
+    <div class="arm right"></div>
+    <div class="leg left"></div>
+    <div class="leg right"></div>
+  </div>
+
+  <div class="floor"></div>
+</div>
+
+<div class="controls">
+  <button class="active" onclick="setDance('default', this)">Groove</button>
+  <button onclick="setDance('robot', this)">Robot</button>
+  <button onclick="setDance('spin', this)">Spin</button>
+  <button onclick="setDance('bounce', this)">Bounce</button>
+</div>
+
+<div class="speed-label" id="speedLabel">Speed: Normal</div>
+
+<script>
+  const bot = document.getElementById('bot');
+  const particlesContainer = document.getElementById('particles');
+  const speedLabel = document.getElementById('speedLabel');
+  const danceStyles = ['default', 'robot', 'spin', 'bounce'];
+  let currentSpeed = 1;
+
+  function setDance(style, btn) {
+    bot.className = 'bot';
+    if (style !== 'default') {
+      bot.classList.add(style);
+    }
+    document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  // Create floating particles
+  function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    const size = Math.random() * 8 + 4;
+    const colors = ['#e8985e', '#ff6b6b', '#ffd93d', '#6bff6b', '#6b6bff', '#ff6bff'];
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    particle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+    particlesContainer.appendChild(particle);
+
+    setTimeout(() => particle.remove(), 4000);
+  }
+
+  setInterval(createParticle, 300);
+
+  // Speed control with keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') {
+      currentSpeed = Math.min(currentSpeed + 0.25, 3);
+      bot.style.animationDuration = (1 / currentSpeed) + 's';
+      speedLabel.textContent = 'Speed: ' + (currentSpeed <= 0.75 ? 'Slow' : currentSpeed <= 1.25 ? 'Normal' : currentSpeed <= 2 ? 'Fast' : 'Turbo!');
+    } else if (e.key === 'ArrowDown') {
+      currentSpeed = Math.max(currentSpeed - 0.25, 0.25);
+      bot.style.animationDuration = (1 / currentSpeed) + 's';
+      speedLabel.textContent = 'Speed: ' + (currentSpeed <= 0.75 ? 'Slow' : currentSpeed <= 1.25 ? 'Normal' : currentSpeed <= 2 ? 'Fast' : 'Turbo!');
+    } else if (e.key >= '1' && e.key <= '4') {
+      const idx = parseInt(e.key) - 1;
+      const buttons = document.querySelectorAll('button');
+      setDance(danceStyles[idx], buttons[idx]);
+    }
+  });
+</script>
+</body>
+</html>
