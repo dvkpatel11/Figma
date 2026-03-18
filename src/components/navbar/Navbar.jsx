@@ -10,6 +10,7 @@ const Menu = () => (
           <p><a href="#possibility">Open AI</a></p>
           <p><a href="#features">Case Studies</a></p>
           <p><a href="#blog">Library</a></p>
+          <p><a href="/dancing-bot.html" className="gpt3__navbar-dancing-bot">Dancing Bot</a></p>
           </>
 )
 
